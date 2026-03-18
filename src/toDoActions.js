@@ -13,3 +13,12 @@ export const deleteToDo = (id) => {
         toDoList.splice(index, 1);
     }
 }
+
+export const updateToDo = (id, title, description, dueDate, priority) => {
+    const targetItem = toDoList.find(list => list.id === id);
+
+    targetItem.title = title;
+    targetItem.description = description;
+    targetItem.dueDate = dueDate;
+    targetItem.priority = priority;
+}
