@@ -1,20 +1,20 @@
 import "./styles.css";
-import { getToDoList } from "./toDo.js";
-import { createToDo, deleteToDo, updateToDo } from "./toDoActions.js";
-console.log("Hello");
-console.log(getToDoList());
+import Project, { createProject, getAllProjects, deleteProject, deleteToDo } from "./project.js";
+import ToDo, { createToDo } from "./toDo.js";
 
-let newToDo = createToDo("one", "two", "three", "four");
-console.log(getToDoList());
-
-let toDo2 = createToDo("two", "four", "six", "eight");
-console.log(getToDoList());
-
-let toDo1 = createToDo("ok", "ok", "ok", "ok");
-console.log(getToDoList());
-
-deleteToDo(toDo2.id);
-console.log(getToDoList());
-
-updateToDo(toDo1.id, "one", "one", "one", "one");
-console.log(getToDoList());
+const proj1 = createProject("one");
+const proj2 = createProject("two");
+console.log(getAllProjects());
+const proj3 = createProject("three");
+console.log(getAllProjects());
+const todo1 = createToDo("one", "one", "one", "one", proj3.id);
+console.log(getAllProjects());
+proj1.deleteProject();
+console.log(getAllProjects());
+todo1.delete();
+console.log(getAllProjects());
+const todo2 = createToDo("two", "two", "two", "two", proj3.id);
+const todo3 = createToDo("thi","ok", "ok", "ok", proj3.id);
+console.log(getAllProjects());
+proj3.deleteToDo(todo2.id);
+console.log(getAllProjects());
