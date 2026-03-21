@@ -1,6 +1,7 @@
 import "./styles.css";
 import Project, { createProject, getAllProjects, deleteProject, deleteToDo } from "./project.js";
 import ToDo, { createToDo } from "./toDo.js";
+import { showProjects } from "./render.js";
 
 const proj1 = createProject("one");
 const proj2 = createProject("two");
@@ -11,10 +12,13 @@ const todo1 = createToDo("one", "one", "one", "one", proj3.id);
 console.log(getAllProjects());
 proj1.deleteProject();
 console.log(getAllProjects());
-todo1.delete();
 console.log(getAllProjects());
 const todo2 = createToDo("two", "two", "two", "two", proj3.id);
 const todo3 = createToDo("thi","ok", "ok", "ok", proj3.id);
 console.log(getAllProjects());
-proj3.deleteToDo(todo2.id);
+proj3.deleteToDo(todo1.id);
+todo2.updateToDo("one", "eight", "twelve", "forty");
+todo2.toggleComplete();
+console.log(todo2.completed);
+console.log(todo3.completed);
 console.log(getAllProjects());

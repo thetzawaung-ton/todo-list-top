@@ -7,7 +7,13 @@ export default class ToDo {
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
+        this.completed = false;
     }
+}
+
+ToDo.prototype.toggleComplete = function() {
+    this.completed = (this.completed === false) ? true : false;
+    console.log("task done is " + this.completed);
 }
 
 export const createToDo = (title, description,dueDate, priority, projectId) => {
@@ -19,4 +25,11 @@ export const createToDo = (title, description,dueDate, priority, projectId) => {
         console.log("cannot find project");
     }
     return newToDo;
+}
+
+ToDo.prototype.updateToDo = function (newTitle, newDescription, newDuedate, newPriority) {
+    this.title = newTitle;
+    this.description = newDescription;
+    this.dueDate = newDuedate;
+    this.priority = newPriority;
 }
