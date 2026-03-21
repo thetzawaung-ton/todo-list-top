@@ -1,7 +1,6 @@
 import "./styles.css";
 import Project, { createProject, getAllProjects, deleteProject, deleteToDo } from "./project.js";
 import ToDo, { createToDo } from "./toDo.js";
-import { showProjects } from "./render.js";
 
 const proj1 = createProject("one");
 const proj2 = createProject("two");
