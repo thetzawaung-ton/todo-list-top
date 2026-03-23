@@ -25,3 +25,5 @@ Project.prototype.deleteProject = function (){
 Project.prototype.deleteToDo = function(toDoId) {
     this.items = this.items.filter(toDo => toDo.id !== toDoId);
 }
+
+export const defaultProject = createProject("Default Project");
