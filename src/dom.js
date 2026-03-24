@@ -1,11 +1,16 @@
-import { projects, defaultProject } from "./project.js";
+import { projects, defaultProject, deleteProject } from "./project.js";
 
 const sidebar = document.querySelector(".sidebar");
 const allProjectContainer = document.querySelector(".all-project-container");
 const main = document.querySelector(".main");
-let activeProject = projects.find(project => project.id === defaultProject.id);
+let activeProject = findProjectById(defaultProject.id)
+
+function findProjectById(projectId) {
+    return projects.find(project => project.id === projectId);
+}
 
 export const showProjects = () => {
+    allProjectContainer.textContent = "";
     projects.forEach(project => {
         const projectContainer = document.createElement("div");
         projectContainer.classList.add("project");
@@ -14,6 +19,7 @@ export const showProjects = () => {
         projectName.setAttribute("data-project-id", project.id)
         projectName.textContent = project.name;
         const projectDeleteBtn = document.createElement("button");
+        projectDeleteBtn.classList.add("delete-project");
         projectDeleteBtn.textContent = "x";
         projectContainer.append(projectName, projectDeleteBtn);
         allProjectContainer.appendChild(projectContainer);
@@ -32,10 +38,26 @@ export const showToDos = () => {
 }
 
 allProjectContainer.addEventListener("click", function(event) {
+
+    if( event.target.classList.contains("delete-project")) {
+        const projectId = event.target.closest(".project").getAttribute("data-project-id");
+        console.log(projectId);
+        const targetProject = findProjectById(projectId);
+        console.log(targetProject);
+        if(targetProject != defaultProject) {
+            targetProject.deleteProject();
+            activeProject = defaultProject;
+            showProjects();
+            showToDos();
+        }
+        return
+    }
+
     const projectId = (event.target.getAttribute("data-project-id"));
     console.log(projectId);
-    const targetProject = projects.find(project => project.id === projectId);
+    const targetProject = findProjectById(projectId);
     console.log(targetProject);
     activeProject = targetProject;
     showToDos();
+    
 })
