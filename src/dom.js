@@ -1,8 +1,9 @@
-import { projects, defaultProject, deleteProject } from "./project.js";
+import { projects, defaultProject, deleteProject, createProject } from "./project.js";
 
 const sidebar = document.querySelector(".sidebar");
 const allProjectContainer = document.querySelector(".all-project-container");
 const main = document.querySelector(".main");
+const addProjectBtn = document.querySelector(".add-project");
 let activeProject = findProjectById(defaultProject.id)
 
 function findProjectById(projectId) {
@@ -60,4 +61,23 @@ allProjectContainer.addEventListener("click", function(event) {
     activeProject = targetProject;
     showToDos();
     
+})
+
+addProjectBtn.addEventListener("click", function() {
+    const form = document.createElement("form");
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    const submitBtn = document.createElement("button");
+    submitBtn.textContent = "Add";
+    label.textContent = "Enter project name";
+    form.append(label, input, submitBtn);
+    sidebar.insertBefore(form, allProjectContainer);
+    
+    form.addEventListener("submit", function(event) {
+        const name = input.value;
+        createProject(name);
+        showProjects();
+        event.preventDefault();
+        sidebar.removeChild(form);
+    })
 })
