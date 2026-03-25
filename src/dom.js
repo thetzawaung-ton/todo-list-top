@@ -76,11 +76,14 @@ addProjectBtn.addEventListener("click", function() {
     const form = document.createElement("form");
     const label = document.createElement("label");
     const input = document.createElement("input");
+    input.autofocus = true;
     const submitBtn = document.createElement("button");
     submitBtn.textContent = "Add";
     label.textContent = "Enter project name";
     form.append(label, input, submitBtn);
     sidebar.insertBefore(form, allProjectContainer);
+    addProjectBtn.disabled = true;
+    addToDoBtn.disabled = true;
     
     form.addEventListener("submit", function(event) {
         const name = input.value;
@@ -88,6 +91,8 @@ addProjectBtn.addEventListener("click", function() {
         showProjects();
         event.preventDefault();
         sidebar.removeChild(form);
+        addProjectBtn.disabled = false;
+        addToDoBtn.disabled = false;
     })
 })
 
