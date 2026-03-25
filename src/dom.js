@@ -1,4 +1,5 @@
 import { projects, defaultProject, deleteProject, createProject } from "./project.js";
+import { format } from "date-fns";
 
 const sidebar = document.querySelector(".sidebar");
 const allProjectContainer = document.querySelector(".all-project-container");
@@ -34,8 +35,14 @@ export const showToDos = () => {
     activeProject.items.forEach(toDo => {
         const toDoContainer = document.createElement("div");
         const toDoTitle = document.createElement("h3");
-        toDoTitle.textContent = toDo.title;
-        toDoContainer.appendChild(toDoTitle);
+        toDoTitle.textContent = "Title: " + toDo.title;
+        const toDoDueDate = document.createElement("h3");
+        toDoDueDate.textContent = "Due Date: " + format(toDo.dueDate, "dd,MM,yyyy");
+        const updateToDoBtn = document.createElement("button");
+        updateToDoBtn.textContent = "Edit";
+        const deleteToDoBtn = document.createElement("button");
+        deleteToDoBtn.textContent = "Delete";
+        toDoContainer.append(toDoTitle, toDoDueDate, updateToDoBtn, deleteToDoBtn);
         allTodoContainer.appendChild(toDoContainer);
     })
 }
