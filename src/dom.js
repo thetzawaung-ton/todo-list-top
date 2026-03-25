@@ -3,7 +3,10 @@ import { projects, defaultProject, deleteProject, createProject } from "./projec
 const sidebar = document.querySelector(".sidebar");
 const allProjectContainer = document.querySelector(".all-project-container");
 const main = document.querySelector(".main");
+const allTodoContainer = document.querySelector(".all-todo-container");
 const addProjectBtn = document.querySelector(".add-project");
+const addToDoBtn = document.querySelector(".add-todo");
+const dialogElem = document.querySelector("dialog");
 let activeProject = findProjectById(defaultProject.id)
 
 function findProjectById(projectId) {
@@ -17,7 +20,6 @@ export const showProjects = () => {
         projectContainer.classList.add("project");
         projectContainer.setAttribute("data-project-id", project.id)
         const projectName = document.createElement("span");
-        projectName.setAttribute("data-project-id", project.id)
         projectName.textContent = project.name;
         const projectDeleteBtn = document.createElement("button");
         projectDeleteBtn.classList.add("delete-project");
@@ -28,13 +30,13 @@ export const showProjects = () => {
 }
 
 export const showToDos = () => {
-    main.textContent = "";
+    allTodoContainer.textContent = "";
     activeProject.items.forEach(toDo => {
         const toDoContainer = document.createElement("div");
         const toDoTitle = document.createElement("h3");
         toDoTitle.textContent = toDo.title;
         toDoContainer.appendChild(toDoTitle);
-        main.appendChild(toDoContainer);
+        allTodoContainer.appendChild(toDoContainer);
     })
 }
 
@@ -54,7 +56,7 @@ allProjectContainer.addEventListener("click", function(event) {
         return
     }
 
-    const projectId = (event.target.getAttribute("data-project-id"));
+    const projectId = (event.target.closest(".project").getAttribute("data-project-id"));
     console.log(projectId);
     const targetProject = findProjectById(projectId);
     console.log(targetProject);
@@ -80,4 +82,8 @@ addProjectBtn.addEventListener("click", function() {
         event.preventDefault();
         sidebar.removeChild(form);
     })
+})
+
+addToDoBtn.addEventListener("click", function() {
+    dialogElem.showModal();
 })
