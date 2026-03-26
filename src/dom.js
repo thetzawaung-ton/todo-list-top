@@ -35,13 +35,17 @@ export const showToDos = () => {
     allTodoContainer.textContent = "";
     activeProject.items.forEach(toDo => {
         const toDoContainer = document.createElement("div");
+        toDoContainer.classList.add("todo");
+        toDoContainer.setAttribute("data-todo-id", toDo.id);
         const toDoTitle = document.createElement("h3");
         toDoTitle.textContent = "Title: " + toDo.title;
         const toDoDueDate = document.createElement("h3");
         toDoDueDate.textContent = "Due Date: " + format(toDo.dueDate, "dd,MM,yyyy");
         const updateToDoBtn = document.createElement("button");
+        updateToDoBtn.classList.add("update-todo");
         updateToDoBtn.textContent = "Edit";
         const deleteToDoBtn = document.createElement("button");
+        deleteToDoBtn.classList.add("delete-todo");
         deleteToDoBtn.textContent = "Delete";
         toDoContainer.append(toDoTitle, toDoDueDate, updateToDoBtn, deleteToDoBtn);
         allTodoContainer.appendChild(toDoContainer);
@@ -126,3 +130,12 @@ dialogForm.addEventListener("submit", function() {
     dialogForm.reset();
     showToDos();
 })
+
+allTodoContainer.addEventListener("click", function(event) {
+    if(event.target.classList.contains("delete-todo")) {
+        const toDoId = event.target.closest(".todo").getAttribute("data-todo-id");
+        activeProject.deleteToDo(toDoId);
+        showToDos();
+    }
+})
+
