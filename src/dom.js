@@ -1,5 +1,6 @@
 import { projects, defaultProject, deleteProject, createProject } from "./project.js";
 import { format } from "date-fns";
+import { createToDo } from "./toDo.js";
 
 const sidebar = document.querySelector(".sidebar");
 const allProjectContainer = document.querySelector(".all-project-container");
@@ -101,4 +102,23 @@ addProjectBtn.addEventListener("click", function() {
 
 addToDoBtn.addEventListener("click", function() {
     dialogElem.showModal();
+})
+
+const closeDialogBtn = document.querySelector(".close-dialog");
+const dialogForm = document.querySelector(".dialog-form")
+closeDialogBtn.addEventListener("click", function(event) {
+    event.preventDefault();
+    dialogForm.reset();
+    dialogElem.close();
+})
+
+dialogForm.addEventListener("submit", function() {
+    const formTitle = document.querySelector("#title").value;
+    const formDescription = document.querySelector("#description").value;
+    const formDueDate = document.querySelector("#due_date").valueAsDate;
+    const formPriority = document.querySelector("#priority").value;
+
+    createToDo(formTitle, formDescription, formDueDate, formPriority, activeProject.id);
+    dialogForm.reset();
+    showToDos();
 })
