@@ -112,6 +112,10 @@ closeDialogBtn.addEventListener("click", function(event) {
     dialogElem.close();
 })
 
+
+const dueDate = document.querySelector("#due_date");
+dueDate.min = new Date().toISOString().split("T")[0];
+
 dialogForm.addEventListener("submit", function() {
     const formTitle = document.querySelector("#title").value;
     const formDescription = document.querySelector("#description").value;
