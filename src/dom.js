@@ -55,10 +55,13 @@ allProjectContainer.addEventListener("click", function(event) {
         const targetProject = findProjectById(projectId);
         console.log(targetProject);
         if(targetProject != defaultProject) {
-            targetProject.deleteProject();
-            activeProject = defaultProject;
-            showProjects();
-            showToDos();
+            const confirmDelete = confirm(`Are you sure to delete project ${targetProject.name}`);
+            if(confirmDelete) {
+                targetProject.deleteProject();
+                activeProject = defaultProject;
+                showProjects();
+                showToDos();
+            }
         }
         return
     }

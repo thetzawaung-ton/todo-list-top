@@ -13,8 +13,10 @@ body {
 
 .sidebar {
     background-color: cyan;
+    min-height: 100dvh;
 }
 
 .main {
     background-color: yellowgreen;
+    min-height: 100dvh;
 }
