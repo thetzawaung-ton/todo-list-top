@@ -106,6 +106,7 @@ addProjectBtn.addEventListener("click", function() {
 
 addToDoBtn.addEventListener("click", function() {
     dialogElem.showModal();
+    dialogForm.setAttribute("form-mode", "add");
 })
 
 const closeDialogBtn = document.querySelector(".close-dialog");
@@ -120,14 +121,20 @@ closeDialogBtn.addEventListener("click", function(event) {
 const dueDate = document.querySelector("#due_date");
 dueDate.min = new Date().toISOString().split("T")[0];
 
-dialogForm.addEventListener("submit", function() {
+dialogForm.addEventListener("submit", function(event) {
     const formTitle = document.querySelector("#title").value;
     const formDescription = document.querySelector("#description").value;
     const formDueDate = document.querySelector("#due_date").valueAsDate;
     const formPriority = document.querySelector("#priority").value;
+    const mode = dialogForm.getAttribute("form-mode");
 
-    createToDo(formTitle, formDescription, formDueDate, formPriority, activeProject.id);
+    if(mode === "add") {
+        createToDo(formTitle, formDescription, formDueDate, formPriority, activeProject.id);
+        dialogForm.removeAttribute("form-mode");
+    }
+    event.preventDefault();
     dialogForm.reset();
+    dialogElem.close();
     showToDos();
 })
 
@@ -136,6 +143,16 @@ allTodoContainer.addEventListener("click", function(event) {
         const toDoId = event.target.closest(".todo").getAttribute("data-todo-id");
         activeProject.deleteToDo(toDoId);
         showToDos();
+    }
+    if(event.target.classList.contains("update-todo")) {
+        dialogElem.showModal();
+        dialogForm.setAttribute("form-mode", "edit");
+        const toDoId = event.target.closest(".todo").getAttribute("data-todo-id");
+        const targetToDo = activeProject.items.find(toDo => toDo.id === toDoId);
+        document.querySelector("#title").value = targetToDo.title;
+        document.querySelector("#description").value = targetToDo.description;
+        document.querySelector("#due_date").valueAsDate = targetToDo.dueDate;
+        document.querySelector("#priority").value = targetToDo.priority;
     }
 })
 
