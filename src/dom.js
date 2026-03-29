@@ -132,6 +132,13 @@ dialogForm.addEventListener("submit", function(event) {
         createToDo(formTitle, formDescription, formDueDate, formPriority, activeProject.id);
         dialogForm.removeAttribute("form-mode");
     }
+    if(mode === "edit") {
+        const toDoId = event.target.closest("form").getAttribute("data-todo-id");
+        const targetToDo = activeProject.items.find(toDo => toDo.id === toDoId);
+        targetToDo.updateToDo(formTitle, formDescription, formDueDate, formPriority);
+        dialogForm.removeAttribute("form-mode");
+        dialogForm.removeAttribute("data-todo-id");
+    }
     event.preventDefault();
     dialogForm.reset();
     dialogElem.close();
@@ -149,6 +156,7 @@ allTodoContainer.addEventListener("click", function(event) {
         dialogForm.setAttribute("form-mode", "edit");
         const toDoId = event.target.closest(".todo").getAttribute("data-todo-id");
         const targetToDo = activeProject.items.find(toDo => toDo.id === toDoId);
+        dialogForm.setAttribute("data-todo-id", toDoId);
         document.querySelector("#title").value = targetToDo.title;
         document.querySelector("#description").value = targetToDo.description;
         document.querySelector("#due_date").valueAsDate = targetToDo.dueDate;

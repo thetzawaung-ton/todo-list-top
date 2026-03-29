@@ -8,6 +8,6 @@ const proj2 = createProject("two");
 console.log(getAllProjects());
 const proj3 = createProject("three");
 showProjects();
-const todo4 = createToDo("test", "test", new Date("2026-04-01"), "test", defaultProject.id);
-const todo5 = createToDo("test", "test", new Date("2026-04-02"), "test", defaultProject.id);
+const todo4 = createToDo("test", "test", new Date("2026-04-01"), "Medium", defaultProject.id);
+const todo5 = createToDo("test", "test", new Date("2026-04-02"), "High", defaultProject.id);
 showToDos();
