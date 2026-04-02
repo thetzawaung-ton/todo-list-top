@@ -1,3 +1,4 @@
+import { setLocalStorage } from "./localStorage.js";
 import { projects } from "./project.js";
 
 export default class ToDo {
@@ -24,6 +25,7 @@ export const createToDo = (title, description,dueDate, priority, projectId) => {
     } else {
         console.log("cannot find project");
     }
+    setLocalStorage();
     return newToDo;
 }
 

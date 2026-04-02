@@ -1,3 +1,5 @@
+import { setLocalStorage } from "./localStorage.js";
+
 export const projects = [];
 
 export default class Project {
