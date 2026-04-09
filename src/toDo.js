@@ -1,4 +1,3 @@
-import { setLocalStorage } from "./localStorage.js";
 import { projects } from "./project.js";
 
 export default class ToDo {

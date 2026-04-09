@@ -1,6 +1,6 @@
 import { projects, createProject, deleteProject } from "./project.js";
 import { format } from "date-fns";
-import ToDo, { createToDo } from "./toDo.js";
+import { createToDo } from "./toDo.js";
 import { renderFromLocal, setLocalStorage } from "./localStorage.js";
 
 const sidebar = document.querySelector(".sidebar");
@@ -23,8 +23,6 @@ if(activeProjectFromLocal) {
 if(!activeProject) {
     activeProject = getDefaultProject();
 }
-showProjects();
-showToDos();
 export const getActiveProject = () => activeProject;
 
 function findProjectById(projectId) {
@@ -72,9 +70,7 @@ allProjectContainer.addEventListener("click", function(event) {
 
     if( event.target.classList.contains("delete-project")) {
         const projectId = event.target.closest(".project").getAttribute("data-project-id");
-        console.log(projectId);
         const targetProject = findProjectById(projectId);
-        console.log(targetProject);
         if(targetProject != getDefaultProject()) {
             const confirmDelete = confirm(`Are you sure to delete project ${targetProject.name}`);
             if(confirmDelete) {
@@ -90,9 +86,7 @@ allProjectContainer.addEventListener("click", function(event) {
     }
 
     const projectId = (event.target.closest(".project").getAttribute("data-project-id"));
-    console.log(projectId);
     const targetProject = findProjectById(projectId);
-    console.log(targetProject);
     activeProject = targetProject;
     localStorage.setItem("active-project", JSON.stringify(targetProject));
     showToDos();
