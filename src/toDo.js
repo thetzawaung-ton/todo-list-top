@@ -25,7 +25,6 @@ export const createToDo = (title, description,dueDate, priority, projectId) => {
     } else {
         console.log("cannot find project");
     }
-    setLocalStorage();
     return newToDo;
 }
 

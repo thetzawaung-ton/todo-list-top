@@ -1,5 +1,3 @@
-import { setLocalStorage } from "./localStorage.js";
-
 export const projects = [];
 
 export default class Project {
@@ -28,4 +26,4 @@ Project.prototype.deleteToDo = function(toDoId) {
     this.items = this.items.filter(toDo => toDo.id !== toDoId);
 }
 
-export const defaultProject = createProject("Default Project");
+createProject("Default Project");

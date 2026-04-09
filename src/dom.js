@@ -1,7 +1,7 @@
-import { projects, defaultProject, deleteProject, createProject } from "./project.js";
+import { projects, createProject, deleteProject } from "./project.js";
 import { format } from "date-fns";
-import { createToDo } from "./toDo.js";
-import { getLocalStorage, setLocalStorage } from "./localStorage.js";
+import ToDo, { createToDo } from "./toDo.js";
+import { renderFromLocal, setLocalStorage } from "./localStorage.js";
 
 const sidebar = document.querySelector(".sidebar");
 const allProjectContainer = document.querySelector(".all-project-container");
@@ -10,15 +10,28 @@ const allTodoContainer = document.querySelector(".all-todo-container");
 const addProjectBtn = document.querySelector(".add-project");
 const addToDoBtn = document.querySelector(".add-todo");
 const dialogElem = document.querySelector("dialog");
-let activeProject = findProjectById(defaultProject.id)
 
+renderFromLocal();
+export const getDefaultProject = () => projects.find(project => project.name === "Default Project");
+
+const activeProjectFromLocal = JSON.parse(localStorage.getItem("active-project"));
+
+let activeProject;
+if(activeProjectFromLocal) {
+    activeProject = findProjectById(activeProjectFromLocal.id);
+}
+if(!activeProject) {
+    activeProject = getDefaultProject();
+}
+showProjects();
+showToDos();
 export const getActiveProject = () => activeProject;
 
 function findProjectById(projectId) {
-    return projects.find(project => project.id === projectId);
+    return projects.find(project => project.id == projectId);
 }
 
-export const showProjects = () => {
+export function showProjects() {
     allProjectContainer.textContent = "";
     projects.forEach(project => {
         const projectContainer = document.createElement("div");
@@ -34,7 +47,7 @@ export const showProjects = () => {
     })
 }
 
-export const showToDos = () => {
+export function showToDos() {
     allTodoContainer.textContent = "";
     activeProject.items.forEach(toDo => {
         const toDoContainer = document.createElement("div");
@@ -62,12 +75,13 @@ allProjectContainer.addEventListener("click", function(event) {
         console.log(projectId);
         const targetProject = findProjectById(projectId);
         console.log(targetProject);
-        if(targetProject != defaultProject) {
+        if(targetProject != getDefaultProject()) {
             const confirmDelete = confirm(`Are you sure to delete project ${targetProject.name}`);
             if(confirmDelete) {
                 targetProject.deleteProject();
                 setLocalStorage();
-                activeProject = defaultProject;
+                activeProject = projects.find(project => project.name === "Default Project");
+                localStorage.setItem("active-project", JSON.stringify(activeProject));
                 showProjects();
                 showToDos();
             }
@@ -80,6 +94,7 @@ allProjectContainer.addEventListener("click", function(event) {
     const targetProject = findProjectById(projectId);
     console.log(targetProject);
     activeProject = targetProject;
+    localStorage.setItem("active-project", JSON.stringify(targetProject));
     showToDos();
     
 })
@@ -136,13 +151,17 @@ dialogForm.addEventListener("submit", function(event) {
     if(mode === "add") {
         createToDo(formTitle, formDescription, formDueDate, formPriority, activeProject.id);
         setLocalStorage();
+        activeProject = findProjectById(activeProject.id);
+        localStorage.setItem("active-project", JSON.stringify(activeProject));
         dialogForm.removeAttribute("form-mode");
     }
     if(mode === "edit") {
         const toDoId = event.target.closest("form").getAttribute("data-todo-id");
-        const targetToDo = activeProject.items.find(toDo => toDo.id === toDoId);
+        const targetToDo = activeProject.items.find(toDo => toDo.id == toDoId);
         targetToDo.updateToDo(formTitle, formDescription, formDueDate, formPriority);
         setLocalStorage();
+        activeProject = findProjectById(activeProject.id);
+        localStorage.setItem("active-project", JSON.stringify(activeProject));
         dialogForm.removeAttribute("form-mode");
         dialogForm.removeAttribute("data-todo-id");
     }
@@ -157,13 +176,15 @@ allTodoContainer.addEventListener("click", function(event) {
         const toDoId = event.target.closest(".todo").getAttribute("data-todo-id");
         activeProject.deleteToDo(toDoId);
         setLocalStorage();
+        activeProject = findProjectById(activeProject.id);
+        localStorage.setItem("active-project", JSON.stringify(activeProject));
         showToDos();
     }
     if(event.target.classList.contains("update-todo")) {
         dialogElem.showModal();
         dialogForm.setAttribute("form-mode", "edit");
         const toDoId = event.target.closest(".todo").getAttribute("data-todo-id");
-        const targetToDo = activeProject.items.find(toDo => toDo.id === toDoId);
+        const targetToDo = activeProject.items.find(toDo => toDo.id == toDoId);
         dialogForm.setAttribute("data-todo-id", toDoId);
         document.querySelector("#title").value = targetToDo.title;
         document.querySelector("#description").value = targetToDo.description;
@@ -172,4 +193,3 @@ allTodoContainer.addEventListener("click", function(event) {
         document.querySelector("#priority").value = targetToDo.priority;
     }
 })
-
