@@ -2,6 +2,7 @@ import { projects, createProject, deleteProject } from "./project.js";
 import { format } from "date-fns";
 import { createToDo } from "./toDo.js";
 import { renderFromLocal, setLocalStorage } from "./localStorage.js";
+import { ta } from "date-fns/locale";
 
 const sidebar = document.querySelector(".sidebar");
 const allProjectContainer = document.querySelector(".all-project-container");
@@ -9,7 +10,8 @@ const main = document.querySelector(".main");
 const allTodoContainer = document.querySelector(".all-todo-container");
 const addProjectBtn = document.querySelector(".add-project");
 const addToDoBtn = document.querySelector(".add-todo");
-const dialogElem = document.querySelector("dialog");
+const dialogElem = document.querySelector(".form-dialog");
+const alertDialog = document.querySelector(".alert-dialog");
 
 renderFromLocal();
 export const getDefaultProject = () => projects.find(project => project.name === "Default Project");
@@ -71,12 +73,15 @@ allProjectContainer.addEventListener("click", function(event) {
     if( event.target.classList.contains("delete-project")) {
         const projectId = event.target.closest(".project").getAttribute("data-project-id");
         const targetProject = findProjectById(projectId);
-        if(targetProject != getDefaultProject()) {
+        if(targetProject == getDefaultProject()) {
+            showAlert("Default project can not be deleted");
+        }
+        else if(targetProject != getDefaultProject()) {
             const confirmDelete = confirm(`Are you sure to delete project ${targetProject.name}`);
             if(confirmDelete) {
                 targetProject.deleteProject();
                 setLocalStorage();
-                activeProject = projects.find(project => project.name === "Default Project");
+                activeProject = getDefaultProject();
                 localStorage.setItem("active-project", JSON.stringify(activeProject));
                 showProjects();
                 showToDos();
@@ -107,15 +112,30 @@ addProjectBtn.addEventListener("click", function() {
     addToDoBtn.disabled = true;
     
     form.addEventListener("submit", function(event) {
-        const name = input.value;
+        event.preventDefault();
+        if(projects.find(project=> project.name === input.value)) {
+            showAlert("The project name can not be the same");
+        }
+        else {const name = input.value;
         createProject(name);
         setLocalStorage();
         showProjects();
-        event.preventDefault();
         sidebar.removeChild(form);
         addProjectBtn.disabled = false;
         addToDoBtn.disabled = false;
+        }
     })
+})
+
+function showAlert(message) {
+    alertDialog.showModal();
+    const alertMessage = document.querySelector(".alert-message");
+    alertMessage.textContent = message;
+}
+
+const closeAlertBtn = document.querySelector(".alert-close");
+closeAlertBtn.addEventListener("click", function() {
+    alertDialog.close();
 })
 
 addToDoBtn.addEventListener("click", function() {
