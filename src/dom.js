@@ -12,6 +12,7 @@ const addProjectBtn = document.querySelector(".add-project");
 const addToDoBtn = document.querySelector(".add-todo");
 const dialogElem = document.querySelector(".form-dialog");
 const alertDialog = document.querySelector(".alert-dialog");
+const warningDialog = document.querySelector(".warning-dialog");
 
 renderFromLocal();
 export const getDefaultProject = () => projects.find(project => project.name === "Default Project");
@@ -77,15 +78,8 @@ allProjectContainer.addEventListener("click", function(event) {
             showAlert("Default project can not be deleted");
         }
         else if(targetProject != getDefaultProject()) {
-            const confirmDelete = confirm(`Are you sure to delete project ${targetProject.name}`);
-            if(confirmDelete) {
-                targetProject.deleteProject();
-                setLocalStorage();
-                activeProject = getDefaultProject();
-                localStorage.setItem("active-project", JSON.stringify(activeProject));
-                showProjects();
-                showToDos();
-            }
+            showWarning(`Are you sure to delete project ${targetProject.name}`);
+            warningDialog.setAttribute("project-id", targetProject.id);
         }
         return
     }
@@ -96,6 +90,32 @@ allProjectContainer.addEventListener("click", function(event) {
     localStorage.setItem("active-project", JSON.stringify(targetProject));
     showToDos();
     
+})
+
+function showWarning(message) {
+        warningDialog.showModal();
+        const warningMessage = document.querySelector(".warning-message");
+        warningMessage.textContent = message;
+}
+
+const warningComfirmBtn = document.querySelector(".comfirm");
+const warningCancelBtn = document.querySelector(".cancel");
+
+warningCancelBtn.addEventListener("click", function() {
+    warningDialog.removeAttribute("project-id");
+    warningDialog.close();
+})
+
+warningComfirmBtn.addEventListener("click", function() {
+    const targetProject = findProjectById(warningDialog.getAttribute("project-id"));
+    targetProject.deleteProject();
+    setLocalStorage();
+    activeProject = getDefaultProject();
+    localStorage.setItem("active-project", JSON.stringify(activeProject));
+    warningDialog.removeAttribute("project-id");
+    warningDialog.close();
+    showProjects();
+    showToDos();
 })
 
 addProjectBtn.addEventListener("click", function() {
