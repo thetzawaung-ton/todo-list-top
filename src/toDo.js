@@ -13,7 +13,6 @@ export default class ToDo {
 
 ToDo.prototype.toggleComplete = function() {
     this.completed = (this.completed === false) ? true : false;
-    console.log("task done is " + this.completed);
 }
 
 export const createToDo = (title, description,dueDate, priority, projectId) => {

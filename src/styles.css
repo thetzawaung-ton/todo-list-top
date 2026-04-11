@@ -20,3 +20,7 @@ body {
     background-color: yellowgreen;
     min-height: 100dvh;
 }
+
+.line-through {
+    text-decoration-line: line-through;
+}

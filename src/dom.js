@@ -2,7 +2,6 @@ import { projects, createProject, deleteProject } from "./project.js";
 import { format } from "date-fns";
 import { createToDo } from "./toDo.js";
 import { renderFromLocal, setLocalStorage } from "./localStorage.js";
-import { ta } from "date-fns/locale";
 
 const sidebar = document.querySelector(".sidebar");
 const allProjectContainer = document.querySelector(".all-project-container");
@@ -61,17 +60,29 @@ export function showToDos() {
         } else if (toDo.priority === "High") {
             toDoContainer.style.backgroundColor = "red";
         }
+        const completeToggle = document.createElement("input");
+        completeToggle.classList.add("complete-status");
+        completeToggle.type = "checkbox";
         const toDoTitle = document.createElement("h3");
         toDoTitle.textContent = "Title: " + toDo.title;
         const toDoDueDate = document.createElement("h3");
         toDoDueDate.textContent = "Due Date: " + format(toDo.dueDate, "dd,MM,yyyy");
+        if(toDo.completed === true) {
+            completeToggle.checked = true;
+            toDoTitle.classList.add("line-through");
+            toDoDueDate.classList.add("line-through");
+        } else if(toDo.completed === false) {
+            completeToggle.checked = false;
+            toDoTitle.classList.remove("line-through");
+            toDoDueDate.classList.remove("line-through");
+        }
         const updateToDoBtn = document.createElement("button");
         updateToDoBtn.classList.add("update-todo");
         updateToDoBtn.textContent = "Edit";
         const deleteToDoBtn = document.createElement("button");
         deleteToDoBtn.classList.add("delete-todo");
         deleteToDoBtn.textContent = "Delete";
-        toDoContainer.append(toDoTitle, toDoDueDate, updateToDoBtn, deleteToDoBtn);
+        toDoContainer.append(completeToggle, toDoTitle, toDoDueDate, updateToDoBtn, deleteToDoBtn);
         allTodoContainer.appendChild(toDoContainer);
     })
 }
@@ -224,7 +235,7 @@ allTodoContainer.addEventListener("click", function(event) {
         localStorage.setItem("active-project", JSON.stringify(activeProject));
         showToDos();
     }
-    if(event.target.classList.contains("update-todo")) {
+    else if(event.target.classList.contains("update-todo")) {
         dialogElem.showModal();
         dialogForm.setAttribute("form-mode", "edit");
         const toDoId = event.target.closest(".todo").getAttribute("data-todo-id");
@@ -235,5 +246,17 @@ allTodoContainer.addEventListener("click", function(event) {
         const dateObj = new Date(targetToDo.dueDate);
         document.querySelector("#due_date").valueAsDate = dateObj;
         document.querySelector("#priority").value = targetToDo.priority;
+    }
+})
+
+allTodoContainer.addEventListener("change", function(event) {
+    if (event.target.classList.contains("complete-status")) {
+        const toDoId = event.target.closest(".todo").getAttribute("data-todo-id");
+        const targetToDo = activeProject.items.find(toDo => toDo.id == toDoId);
+        targetToDo.toggleComplete();
+        setLocalStorage();
+        activeProject = findProjectById(activeProject.id);
+        localStorage.setItem("active-project", JSON.stringify(activeProject));
+        showToDos();
     }
 })
