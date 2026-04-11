@@ -54,6 +54,13 @@ export function showToDos() {
         const toDoContainer = document.createElement("div");
         toDoContainer.classList.add("todo");
         toDoContainer.setAttribute("data-todo-id", toDo.id);
+        if(toDo.priority === "Low") {
+            toDoContainer.style.backgroundColor = "blue";
+        } else if(toDo.priority === "Medium") {
+            toDoContainer.style.backgroundColor = "yellow";
+        } else if (toDo.priority === "High") {
+            toDoContainer.style.backgroundColor = "red";
+        }
         const toDoTitle = document.createElement("h3");
         toDoTitle.textContent = "Title: " + toDo.title;
         const toDoDueDate = document.createElement("h3");
@@ -133,7 +140,10 @@ addProjectBtn.addEventListener("click", function() {
     
     form.addEventListener("submit", function(event) {
         event.preventDefault();
-        if(projects.find(project=> project.name === input.value)) {
+        if(input.value.length < 3) {
+            showAlert("Project name must include at least 3 words");
+        }
+        else if(projects.find(project=> project.name === input.value)) {
             showAlert("The project name can not be the same");
         }
         else {const name = input.value;
