@@ -13,16 +13,25 @@ body {
 
 .sidebar {
     background-color: cyan;
-    min-height: 100dvh;
 }
 
 .main {
     background-color: #848880;
+    text-align: left;
+}
+
+.sidebar, .main {
+    padding: 1.5rem;
     min-height: 100dvh;
+}
+
+.add-todo {
+    margin-left: 1rem;
 }
 
 .line-through {
     text-decoration-line: line-through;
+    text-decoration-color: white;
 }
 
 dialog {
@@ -65,4 +74,34 @@ button {
 
 .button-group button {
     margin-top: 1rem;
+}
+
+.all-todo-container {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.todo {
+    padding: 1rem;
+    border-radius: 1rem;
+    text-align: left;
+    color: #222222;
+}
+
+.todo > *:not(button) {
+    margin-bottom: 0.5rem;
+}
+
+.todo > h3 {
+    text-align: left;
+}
+
+.delete-todo {
+    float: right;
+}
+
+input[type=checkbox] {
+    accent-color: gold;
 }

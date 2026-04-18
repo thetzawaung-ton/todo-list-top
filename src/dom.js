@@ -56,7 +56,7 @@ export function showToDos() {
         if(toDo.priority === "Low") {
             toDoContainer.style.backgroundColor = "blue";
         } else if(toDo.priority === "Medium") {
-            toDoContainer.style.backgroundColor = "yellow";
+            toDoContainer.style.backgroundColor = "orange";
         } else if (toDo.priority === "High") {
             toDoContainer.style.backgroundColor = "red";
         }
