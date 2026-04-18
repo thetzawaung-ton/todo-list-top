@@ -17,10 +17,52 @@ body {
 }
 
 .main {
-    background-color: yellowgreen;
+    background-color: #848880;
     min-height: 100dvh;
 }
 
 .line-through {
     text-decoration-line: line-through;
+}
+
+dialog {
+    margin: auto;
+    padding: 1rem;
+    background-color: #848884;
+    border: 1px solid #848884;
+    border-radius: 1rem;
+    color: white;
+}
+
+.dialog-form > p {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding: 0.25rem;
+    gap: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.dialog-form label {
+    justify-self: self-end;
+}
+
+.form-button, .button-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    padding: 0.1rem 0.5rem;
+    border: 1px solid #848884;
+    border-radius: 0.5rem;
+    color: darkslateblue;
+}
+
+.alert-container button{
+    float: right;
+    margin-top: 1rem;
+}
+
+.button-group button {
+    margin-top: 1rem;
 }
