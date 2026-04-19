@@ -36,6 +36,9 @@ export function showProjects() {
     projects.forEach(project => {
         const projectContainer = document.createElement("div");
         projectContainer.classList.add("project");
+        if (project === activeProject) {
+            projectContainer.classList.add("active");
+        }
         projectContainer.setAttribute("data-project-id", project.id)
         const projectName = document.createElement("span");
         projectName.textContent = project.name;
@@ -88,6 +91,12 @@ export function showToDos() {
 }
 
 allProjectContainer.addEventListener("click", function(event) {
+    
+    const projects = document.querySelectorAll(".project");
+    projects.forEach(project => {
+        project.classList.remove("active");
+    })
+    event.target.closest(".project").classList.add("active");
 
     if( event.target.classList.contains("delete-project")) {
         const projectId = event.target.closest(".project").getAttribute("data-project-id");
@@ -142,9 +151,12 @@ addProjectBtn.addEventListener("click", function() {
     const input = document.createElement("input");
     input.autofocus = true;
     const submitBtn = document.createElement("button");
+    const inputContainer = document.createElement("div");
+    inputContainer.classList.add("input-container");
+    inputContainer.append(input, submitBtn);
     submitBtn.textContent = "Add";
     label.textContent = "Enter project name";
-    form.append(label, input, submitBtn);
+    form.append(label, inputContainer);
     sidebar.insertBefore(form, allProjectContainer);
     addProjectBtn.disabled = true;
     addToDoBtn.disabled = true;

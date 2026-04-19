@@ -8,11 +8,11 @@
 body {
     display: grid;
     grid-template-columns: 1fr 3fr;
-    gap: 1rem;
 }
 
 .sidebar {
-    background-color: cyan;
+    background-color: #4b6365;
+    text-align: left;
 }
 
 .main {
@@ -79,7 +79,7 @@ button {
 .all-todo-container {
     padding: 1rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
 }
 
@@ -104,4 +104,17 @@ button {
 
 input[type=checkbox] {
     accent-color: gold;
+}
+.add-project {
+    margin-bottom: 1rem;
+}
+
+.project, .input-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem;
+}
+
+.active {
+    color: gold;
 }
